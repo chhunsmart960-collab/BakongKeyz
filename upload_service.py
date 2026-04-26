@@ -9,7 +9,7 @@ def allowed_file(filename, allowed_extensions):
         filename.rsplit('.', 1)[1].lower() in allowed_extensions
     )
 
-def watermark(img, text="KAILANG"):
+def watermark(img, text=""):
     img = img.convert("RGBA")
 
     layer = Image.new('RGBA', img.size, (0, 0, 0, 0))

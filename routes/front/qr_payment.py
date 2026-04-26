@@ -54,7 +54,7 @@ def qr_payment():
     )
 
     db.session.add(order)
-    db.session.commit()
+    db.session.flush()
 
     session["order_id"] = order.id
 

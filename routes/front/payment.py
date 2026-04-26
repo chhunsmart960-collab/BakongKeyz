@@ -4,17 +4,18 @@ from model.cart import Cart
 
 
 def get_cart():
+    cart_id = session.get('cart_id')
+    if cart_id:
+        cart = Cart.query.filter_by(id=cart_id, status=0).first()  # ✅ active cart only
+        if cart:
+            return cart
+
+    # fallback: find active cart by user_id
     user_id = session.get('user_id')
-    cart = None
-
     if user_id:
-        cart = Cart.query.filter_by(user_id=user_id).first()
-    else:
-        cart_id = session.get('cart_id')
-        if cart_id:
-            cart = Cart.query.get(cart_id)
+        return Cart.query.filter_by(user_id=user_id, status=0).first()  # ✅ filter by status
 
-    return cart
+    return None
 
 
 def get_total():

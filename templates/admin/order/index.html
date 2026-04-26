@@ -78,6 +78,7 @@
 
                 {% if orders %}
                   {% for order in orders %}
+                      {% if order.payment_status == 'Paid' %}
                   <tr>
 
                     <td class="pl-4 text-muted">{{ loop.index }}</td>
@@ -130,6 +131,7 @@
                     </td>
 
                   </tr>
+                      {% endif %}
                   {% endfor %}
                 {% else %}
                   <tr>
