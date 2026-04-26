@@ -1,306 +1,168 @@
 {% extends 'pageFront/master.html' %}
-
 {% block content %}
+<style>
+    .hero {
+        padding: 60px 0;
+        border-bottom: 2px solid #000;
+        margin-bottom: 40px;
+    }
+    .hero h1 {
+        font-weight: 800;
+        font-size: 4rem;
+        line-height: 1;
+        letter-spacing: -2px;
+        color: #000;
+        text-transform: uppercase;
+    }
+    .hero p {
+        color: #555;
+        font-size: 1.1rem;
+        margin-top: 15px;
+        max-width: 400px;
+    }
+    .filter {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 40px;
+    }
+    .chip {
+        padding: 8px 20px;
+        border: 1px solid #000;
+        font-size: 0.9rem;
+        font-weight: 600;
+        background: #fff;
+        color: #000;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: all 0.2s;
+    }
+    .chip:hover, .chip.active {
+        background: #000;
+        color: #fff;
+        text-decoration: none;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 30px;
+    }
+    .card {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 0; /* Sharp edges */
+        transition: border-color 0.3s;
+    }
+    .card:hover {
+        border-color: #000;
+    }
+    .card img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    .card-body { padding: 20px; }
+    .card-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+    }
+    .card-desc { font-size: 0.85rem; color: #777; height: 40px; overflow: hidden; margin-bottom: 15px; }
+    .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+    .price { font-weight: 800; font-size: 1.4rem; }
+    .add {
+        width: 40px;
+        height: 40px;
+        background: #000;
+        color: #fff;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .add:hover { background: #333; }
+    .add:disabled { background: #ccc; cursor: not-allowed; }
+    .toast {
+        position: fixed; bottom: 30px; right: 30px;
+        background: #000; color: #fff; padding: 15px 25px;
+        font-weight: 600; font-size: 0.9rem; border-radius: 0;
+        opacity: 0; transform: translateY(10px); transition: 0.3s; z-index: 1000;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+</style>
 
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap"
-          rel="stylesheet">
+<div id="shopApp">
+    <div class="toast" :class="{show: toast}">[[ toast ]]</div>
 
-    <style>
-        :root {
-            --cream: #FAF8F3;
-            --border: #E0D9CC;
-            --text: #1A1710;
-            --muted: #8A8378;
-            --orange: #E8500A;
-        }
-
-        body {
-            background: var(--cream);
-            font-family: 'DM Sans', sans-serif;
-        }
-
-        .hero {
-            max-width: 1100px;
-            margin: auto;
-            padding: 60px 32px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 52px;
-            line-height: 1.1;
-            color: var(--text);
-        }
-
-        .hero h1 em {
-            color: var(--orange);
-            font-style: italic;
-        }
-
-        .hero p {
-            color: var(--muted);
-            max-width: 350px;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        .filter {
-            max-width: 1100px;
-            margin: auto;
-            padding: 20px 32px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .chip {
-            padding: 6px 14px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            font-size: 13px;
-            background: #fff;
-            color: var(--muted);
-            text-decoration: none;
-        }
-
-        .chip.active {
-            background: var(--text);
-            color: #fff;
-            border-color: var(--text);
-        }
-
-        .grid {
-            max-width: 1100px;
-            margin: auto;
-            padding: 20px 32px 60px;
-            display: grid;
-            grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        .card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-
-        .card-body {
-            padding: 15px;
-        }
-
-        .card-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-
-        .card-desc {
-            font-size: 12px;
-            color: var(--muted);
-            height: 32px;
-            overflow: hidden;
-        }
-
-        .card-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 12px;
-        }
-
-        .price {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-        }
-
-        .add {
-            width: 36px;
-            height: 36px;
-            background: var(--orange);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            line-height: 1;
-        }
-
-        .add:disabled {
-            opacity: 0.7;
-            cursor: pointer;
-        }
-
-        /* Toast message */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--text);
-            color: #fff;
-            padding: 10px 16px;
-            border-radius: 10px;
-            font-size: 14px;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: 0.3s;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
-
-    <div id="shopApp">
-
-        <!-- Toast -->
-        <div class="toast" :class="{show: toast}">
-            [[ toast ]]
-        </div>
-
-        <div class="hero">
-            <div>
-                <h1>Good food,<br><em>made fresh.</em></h1>
-                <p>Handpicked ingredients, bold flavors — order what you love.</p>
-            </div>
-        </div>
-
-        <div class="filter">
-            <a class="chip {% if not selected_category %}active{% endif %}" href="{{ url_for('home') }}">All</a>
-
-            {% for cat in categories %}
-                <a class="chip {% if selected_category == cat.name %}active{% endif %}"
-                   href="{{ url_for('products_filter') }}?category={{ cat.name }}">
-                    {{ cat.name }}
-                </a>
-            {% endfor %}
-        </div>
-
-        <div class="grid">
-
-            {% for p in products %}
-                <div class="card">
-
-                    <a href="{{ url_for('product_details',product_id=p.id) }}">
-                        <img src="{{ p.image }}" alt="{{ p.name }}">
-                    </a>
-
-                    <div class="card-body">
-                        <div class="card-title">{{ p.name }}</div>
-                        <div class="card-desc">{{ p.description }}</div>
-
-
-                        <div class="card-bottom">
-
-                            <div>
-                                <div class="price">{{ "%.2f"|format(p.price) }} ៛</div>
-
-                                <div style="
-                                        font-size:11px;
-                                        margin-top:2px;
-                                        color: {% if p.qty > 10 %}#2e7d32{% elif p.qty > 0 %}#e65100{% else %}#c62828{% endif %};
-                                        font-weight:500;
-                                        ">
-                                    {% if p.qty > 10 %}
-                                        In stock ({{ p.qty }})
-                                    {% elif p.qty > 0 %}
-                                        Low stock ({{ p.qty }})
-                                    {% else %}
-                                        Out of stock
-                                    {% endif %}
-                                </div>
-                            </div>
-
-                            {% if p.qty > 0 %}
-                                <button
-                                        class="add"
-                                        @click="addToCart({{ p.id }})"
-                                        :disabled="loading === {{ p.id }}"
-                                >
-                                    [[ loading === {{ p.id }} ? '...' : '+' ]]
-                                </button>
-                            {% else %}
-                                <button class="add" disabled>X</button>
-                            {% endif %}
-
-                        </div>
-
-                    </div>
-
-                </div>
-            {% endfor %}
-
-        </div>
+    <div class="hero">
+        <h1>Define<br>Your Style.</h1>
+        <p>Uncompromising quality. Minimalist aesthetics. Shop the new collection.</p>
     </div>
 
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <div class="filter">
+        <a class="chip {% if not selected_category %}active{% endif %}" href="{{ url_for('home') }}">All</a>
+        {% for cat in categories %}
+            <a class="chip {% if selected_category == cat.name %}active{% endif %}" href="{{ url_for('products_filter') }}?category={{ cat.name }}">{{ cat.name }}</a>
+        {% endfor %}
+    </div>
 
-    <script>
-        const {createApp} = Vue;
+    <div class="grid">
+        {% for p in products %}
+            <div class="card">
+                <a href="{{ url_for('product_details',product_id=p.id) }}">
+                    <img src="{{ p.image }}" alt="{{ p.name }}">
+                </a>
+                <div class="card-body">
+                    <div class="card-title">{{ p.name }}</div>
+                    <div class="card-desc">{{ p.description }}</div>
+                    <div class="card-bottom">
+                        <div>
+                            <div class="price">{{ "%.2f"|format(p.price) }} ៛</div>
+                            <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 600; margin-top: 5px; color: {% if p.qty > 10 %}#000{% elif p.qty > 0 %}#555{% else %}#999{% endif %};">
+                                {% if p.qty > 10 %}In stock ({{ p.qty }}){% elif p.qty > 0 %}Low stock ({{ p.qty }}){% else %}Out of stock{% endif %}
+                            </div>
+                        </div>
+                        {% if p.qty > 0 %}
+                            <button class="add" @click="addToCart({{ p.id }})" :disabled="loading === {{ p.id }}">
+                                [[ loading === {{ p.id }} ? '...' : '+' ]]
+                            </button>
+                        {% else %}
+                            <button class="add" disabled>×</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 
-        createApp({
-
-            delimiters: ['[[', ']]'],
-
-            data() {
-                return {
-                    loading: null,
-                    toast: ''
-                }
-            },
-
-            methods: {
-
-                addToCart(productId) {
-
-                    this.loading = productId;
-
-                    fetch("/cart/add", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            product_id: productId,
-                            qty: 1
-                        })
-                    })
-
-                        .then(res => res.json())
-                        .then(data => {
-                            this.loading = null;
-
-                            this.toast = "Added to cart ✅";
-
-                            setTimeout(() => {
-                                this.toast = "";
-                            }, 2000);
-
-                        })
-
-                        .catch(() => {
-                            this.loading = null;
-                            this.toast = "Error adding item";
-                            setTimeout(() => this.toast = "", 2000);
-                        });
-
-                }
-
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+    const {createApp} = Vue;
+    createApp({
+        delimiters: ['[[', ']]'],
+        data() { return { loading: null, toast: '' } },
+        methods: {
+            addToCart(productId) {
+                this.loading = productId;
+                fetch("/cart/add", {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ product_id: productId, qty: 1 })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    this.loading = null;
+                    this.toast = "ADDED TO CART";
+                    setTimeout(() => { this.toast = ""; }, 2000);
+                })
+                .catch(() => {
+                    this.loading = null;
+                    this.toast = "ERROR";
+                    setTimeout(() => this.toast = "", 2000);
+                });
             }
-
-        }).mount("#shopApp");
-    </script>
-
+        }
+    }).mount("#shopApp");
+</script>
 {% endblock %}

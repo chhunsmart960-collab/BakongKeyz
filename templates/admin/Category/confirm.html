@@ -1,81 +1,79 @@
 {% extends 'admin/layout/master.html' %}
 
 {% block page_title %}
-Admin | Confirm Delete Category
+Admin | Confirm Deletion
 {% endblock %}
 
 {% block content %}
-<div class="content-wrapper">
+<style>
+    /* Keyz Store Admin Overrides */
+    .content-wrapper { font-family: 'Inter', sans-serif; }
+    h1 { font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+    .card { border: 2px solid #000 !important; border-radius: 0 !important; box-shadow: 8px 8px 0px rgba(0,0,0,1) !important; margin-top: 20px;}
+    .card-header { background: #000 !important; color: #fff; border-bottom: none !important; padding: 20px; }
+    .card-title { font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin: 0; font-size: 1.1rem; }
 
-  <!-- Content Header -->
+    .text-danger { color: #000 !important; font-weight: 800; font-size: 1.2rem; text-transform: uppercase; }
+    .alert-danger { background: #f9f9f9 !important; border: 1px dashed #000 !important; color: #000 !important; border-radius: 0; padding: 20px; margin: 30px 0; }
+
+    .btn { border-radius: 0 !important; text-transform: uppercase; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; padding: 12px 24px; }
+    .btn-danger { background-color: #000 !important; border-color: #000 !important; color: #fff !important; transition: 0.3s; }
+    .btn-danger:hover { background-color: #fff !important; color: #000 !important; }
+    .btn-outline-secondary { color: #000; border: 1px solid #e0e0e0; background: #fff; }
+    .btn-outline-secondary:hover { border-color: #000; background: #f9f9f9; color: #000; }
+</style>
+
+<div class="content-wrapper">
   <section class="content-header">
     <div class="container-fluid">
-      <div class="row mb-2">
+      <div class="row mb-2 mt-2">
         <div class="col-sm-6">
-          <h1>Confirm Delete</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item">
-              <a href="{{ url_for('categorys') }}">Categorys</a>
-            </li>
-            <li class="breadcrumb-item active">Confirm Delete</li>
-          </ol>
+          <h1>Action Required</h1>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-
-      <div class="card card-danger shadow-sm">
-        <div class="card-header">
-          <h3 class="card-title">
-            <i class="fas fa-exclamation-triangle mr-2"></i>
-            Delete Category
-          </h3>
-        </div>
-
-        <div class="card-body">
-          <div class="text-center">
-            <p class="text-danger font-weight-bold mb-3">
-              This action cannot be undone.
-            </p>
-
-            <p><strong>Are you sure you want to delete the following category? </strong></p>
-          </div>
-
-          <div class="alert alert-danger text-center">
-              <ul class="mb-0 list-unstyled">
-                <li>
-                  <strong>Name: {{ category.name | upper }}</strong>
-                </li>
-              </ul>
-          </div>
-
-          <form
-                  method="post"
-                  action="{{ url_for('delete_category') }}"
-          >
-            <input type="hidden" name="cat_id" value="{{ category.id }}">
-            <input type="hidden" name="delete_image" value="{{ category.image }}">
-            <div class="d-flex justify-content-between mt-4">
-              <a href="{{ url_for('categorys') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left mr-1"></i> Cancel
-              </a>
-
-              <button type="submit" class="btn btn-danger">
-                <i class="fas fa-trash mr-1"></i> Yes, Delete
-              </button>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header text-center">
+              <h3 class="card-title">Confirm Deletion</h3>
             </div>
-          </form>
+
+            <div class="card-body p-5 text-center">
+              <p class="text-danger mb-2">This action is irreversible.</p>
+              <p style="color: #555;">Are you sure you wish to permanently remove this category from the database?</p>
+
+              <div class="alert alert-danger">
+                  <ul class="mb-0 list-unstyled">
+                    <li>
+                      <span style="font-size: 0.85rem; color: #555; text-transform: uppercase; display: block; margin-bottom: 5px;">Target Entity</span>
+                      <strong style="font-size: 1.5rem; letter-spacing: 1px;">{{ category.name | upper }}</strong>
+                    </li>
+                  </ul>
+              </div>
+
+              <form method="post" action="{{ url_for('delete_category') }}">
+                <input type="hidden" name="cat_id" value="{{ category.id }}">
+                <input type="hidden" name="delete_image" value="{{ category.image }}">
+
+                <div class="d-flex justify-content-center gap-3 mt-5" style="gap: 15px;">
+                  <a href="{{ url_for('categorys') }}" class="btn btn-outline-secondary">
+                    Cancel
+                  </a>
+                  <button type="submit" class="btn btn-danger">
+                    Execute Deletion
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
   </section>
-
 </div>
 {% endblock %}

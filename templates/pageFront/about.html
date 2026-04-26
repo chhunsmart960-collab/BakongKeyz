@@ -1,23 +1,79 @@
 {% extends 'pageFront/master.html' %}
 {% block content %}
+
+<style>
+.about-page {
+    max-width: 800px;
+    margin: 60px auto;
+}
+
+.about-page h2 {
+    font-weight: 800;
+    font-size: 3rem;
+    text-transform: uppercase;
+    border-bottom: 2px solid #000;
+    padding-bottom: 15px;
+    margin-bottom: 40px;
+}
+
+.about-page h3 {
+    font-weight: 800;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    margin: 40px 0 20px;
+}
+
+.about-page p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.team-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.team-list li {
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    font-size: 0.95rem;
+}
+
+.team-list li strong {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+@media (max-width: 600px) {
+    .team-list { grid-template-columns: 1fr; }
+}
+</style>
+
 <main class="about-page">
-    <div class="container">
-        <h2>Our Mission</h2>
-        <p>At <strong>KaiStore</strong>, we strive to deliver high-quality solutions that empower businesses and inspire individuals. Our commitment to innovation, excellence, and customer satisfaction drives everything we do.</p>
+    <h2>The Vision</h2>
+    <p>At <strong>Keyz Store</strong>, we believe in the power of minimalism. We curate high-quality essentials designed to elevate your everyday lifestyle without the clutter.</p>
 
-        <h3>Our History</h3>
-        <p>Founded in 2020, KaiStore has quickly become a trusted partner for clients worldwide. From small startups to large enterprises, we deliver successful projects that leave a lasting impact across multiple industries.</p>
+    <h3>Our Origins</h3>
+    <p>Established with a clear focus on uncompromising quality, Keyz Store has grown from a conceptual idea into a destination for modern design. We serve clients who demand excellence in both form and function.</p>
 
-        <h3>Our Team</h3>
-        <ul class="team-list">
-            <li><strong>Jane Doe</strong> – CEO & Visionary</li>
-            <li><strong>John Smith</strong> – CTO & Tech Innovator</li>
-            <li><strong>Alice Johnson</strong> – Lead Developer & Problem Solver</li>
-            <li><strong>Bob Brown</strong> – Marketing Head & Brand Strategist</li>
-        </ul>
+    <h3>Leadership</h3>
+    <ul class="team-list">
+        <li><strong>Jane Doe</strong> CEO & Founder</li>
+        <li><strong>John Smith</strong> Head of Product</li>
+        <li><strong>Alice Johnson</strong> Lead Designer</li>
+        <li><strong>Bob Brown</strong> Brand Director</li>
+    </ul>
 
-        <h3>Our Values</h3>
-        <p>Integrity, innovation, and customer focus are at the heart of our company culture. We believe in continuous improvement, transparent communication, and building strong relationships with our clients.</p>
-    </div>
+    <h3>Our Ethos</h3>
+    <p>Integrity, refined aesthetics, and absolute customer focus dictate our decisions. We pursue relentless refinement in everything we do.</p>
 </main>
+
 {% endblock %}

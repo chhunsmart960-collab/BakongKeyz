@@ -75,7 +75,7 @@ def qr_payment():
 
     qr = khqr.create_qr(
         bank_account='yin_kamlang@bkrt',
-        merchant_name='KaiShop',
+        merchant_name='KeyzStore',
         merchant_city='Phnom Penh',
         amount=float(total),
         currency='KHR',

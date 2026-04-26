@@ -5,105 +5,133 @@
 {% endblock %}
 
 {% block content %}
+<style>
+    /* Keyz Store Admin Overrides */
+    .content-wrapper { font-family: 'Inter', sans-serif; background-color: #f9f9f9; }
+    h1.m-0 { font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+
+    .card { border: 1px solid #000 !important; border-radius: 0 !important; box-shadow: none !important; margin-top: 15px; }
+    .card-header { background: #fff !important; border-bottom: 1px solid #000 !important; padding: 20px; }
+
+    .table thead tr.bg-primary { background-color: #000 !important; color: #fff !important; }
+    .table thead th { border: none; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; padding: 15px; }
+    .table td { vertical-align: middle; border-bottom: 1px solid #e0e0e0; padding: 15px; }
+
+    .breadcrumb { background: transparent; padding: 0; margin: 0; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
+    .breadcrumb a { color: #555; }
+    .breadcrumb-item.active { color: #000; }
+
+    .btn { border-radius: 0 !important; text-transform: uppercase; font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; transition: 0.3s; }
+    .btn-outline-primary { color: #000; border-color: #000; padding: 8px 20px; }
+    .btn-outline-primary:hover { background: #000; color: #fff; border-color: #000; }
+    .btn-outline-secondary { color: #555; border-color: #e0e0e0; }
+    .btn-outline-secondary:hover { background: #555; color: #fff; border-color: #555; }
+    .btn-outline-danger { color: #000; border-color: #000; }
+    .btn-outline-danger:hover { background: #000; color: #fff; border-color: #000; }
+
+    /* Monochrome Badges */
+    .badge { border-radius: 0; padding: 6px 10px; font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; }
+    .badge-solid { background-color: #000; color: #fff; border: 1px solid #000; }
+    .badge-outline { background-color: transparent; color: #000; border: 1px dashed #000; }
+
+    /* Image Thumbnails */
+    .img-thumbnail-custom { border: 1px solid #000; padding: 2px; width: 50px; height: 50px; object-fit: cover; }
+</style>
+
 <div class="content-wrapper">
 
-  <!-- Content Header -->
   <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Product Page</h1>
+          <h1 class="m-0">Product Inventory</h1>
         </div>
 
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item">
-              <a href="{{ url_for('dashboards') }}">Home</a>
+              <a href="{{ url_for('dashboards') }}">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Product</li>
+            <li class="breadcrumb-item active">Products</li>
           </ol>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Main content -->
   <div class="content">
     <div class="container-fluid">
 
-      <div class="card p-3">
+      <div class="card p-0">
 
-        <div class="card-header">
+        <div class="card-header border-0">
           <a href="{{ url_for('form_product', action='add') }}"
              class="btn btn-outline-primary">
-            Add
+            + Add New Product
           </a>
         </div>
 
-        <div class="card-body">
+        <div class="card-body p-0">
           <div class="table-responsive">
 
-            <table class="table table-borderless table-striped">
+            <table class="table table-borderless mb-0">
 
               <thead>
                 <tr class="bg-primary text-white">
-                  <th>No.</th>
+                  <th class="pl-4">No.</th>
                   <th>Image</th>
                   <th>Name</th>
                   <th>Category</th>
-                  <th>Qty</th> <!-- ✅ ADDED -->
+                  <th>Qty</th>
                   <th>Cost</th>
                   <th>Price</th>
-                  <th>Description</th>
-                  <th>Action</th>
+                  <th class="text-right pr-4">Action</th>
                 </tr>
               </thead>
 
               <tbody>
                 {% for product in products %}
                 <tr>
-                  <td>{{ loop.index }}</td>
+                  <td class="pl-4 text-muted">{{ loop.index }}</td>
 
                   <td>
                     {% if product.image %}
                       <img
                         src="{{ url_for('static', filename='uploads/thumb_' ~ product.image) }}"
                         onerror="this.onerror=null;this.src='/static/error-image.png'"
-                        style="width: 50px; height: 50px; object-fit: contain;"
+                        class="img-thumbnail-custom"
                       >
                     {% else %}
                       <img
                         src="{{ url_for('static', filename='no-image.png') }}"
-                        style="width: 50px; height: 50px; object-fit: contain;"
+                        class="img-thumbnail-custom"
                       >
                     {% endif %}
                   </td>
 
-                  <td>{{ product.name }}</td>
-                  <td>{{ product.category }}</td>
+                  <td style="font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">{{ product.name }}</td>
+                  <td style="color: #555;">{{ product.category }}</td>
 
-                  <!-- ✅ QTY DISPLAY -->
                   <td>
                     {% if product.qty <= 0 %}
-                      <span class="badge bg-danger">Out</span>
+                      <span class="badge badge-outline">Out of Stock</span>
                     {% else %}
-                      <span class="badge bg-success">{{ product.qty }}</span>
+                      <span class="badge badge-solid">{{ product.qty }} Units</span>
                     {% endif %}
                   </td>
 
-                  <td>{{ product.cost }} ៛</td>
-                  <td>{{ product.price }} ៛</td>
-                  <td>{{ product.description }}</td>
+                  <td style="color: #555;">{{ product.cost }} ៛</td>
+                  <td style="font-weight: 600;">{{ product.price }} ៛</td>
 
-                  <td>
-                    <a class="btn btn-sm btn-outline-secondary"
+                  <td class="text-right pr-4">
+                    <a class="btn btn-sm btn-outline-secondary mr-2"
                        href="{{ url_for('form_product', action='edit', pro_id=product.id) }}">
-                      <i class="far fa-edit"></i> Edit
+                      Edit
                     </a>
 
                     <a class="btn btn-sm btn-outline-danger"
                        href="{{ url_for('confirm_product', pro_id=product.id) }}">
-                      <i class="far fa-trash-alt"></i> Delete
+                      Delete
                     </a>
                   </td>
 

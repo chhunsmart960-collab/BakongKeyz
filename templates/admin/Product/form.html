@@ -1,41 +1,67 @@
 {% extends 'admin/layout/master.html' %}
 
 {% block page_title %}
-	Admin | Product
+	Admin | Product Form
 {% endblock %}
 
 {% block content %}
+<style>
+    /* Keyz Store Admin Overrides */
+    .content-wrapper { font-family: 'Inter', sans-serif; background-color: #f9f9f9; }
+    h1.m-0 { font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+
+    .card { border: 1px solid #000 !important; border-radius: 0 !important; box-shadow: none !important; margin-top: 15px; }
+    .card-header { background: #fff !important; border-bottom: 1px solid #e0e0e0 !important; padding: 20px; }
+
+    .breadcrumb { background: transparent; padding: 0; margin: 0; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
+    .breadcrumb a { color: #555; }
+    .breadcrumb-item.active { color: #000; }
+
+    .form-control { border-radius: 0; border: 1px solid #e0e0e0; padding: 12px; height: auto; font-family: 'Inter', sans-serif; }
+    .form-control:focus { border-color: #000; box-shadow: none; }
+    label { font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 8px; }
+
+    .btn { border-radius: 0 !important; text-transform: uppercase; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; padding: 12px 24px; transition: 0.3s; }
+    .btn-primary, .btn-warning { background-color: #000 !important; border-color: #000 !important; color: #fff !important; }
+    .btn-primary:hover, .btn-warning:hover { background-color: #fff !important; color: #000 !important; }
+    .btn-danger { background-color: transparent !important; border: 1px solid #e0e0e0 !important; color: #555 !important; }
+    .btn-danger:hover { border-color: #000 !important; color: #000 !important; }
+    .btn-outline-secondary { color: #000; border-color: transparent; padding-left: 0; }
+    .btn-outline-secondary:hover { background: transparent; color: #555; text-decoration: underline; }
+
+    .img-preview { border: 1px solid #e0e0e0; padding: 5px; max-width: 250px; height: auto; object-fit: contain; margin-bottom: 20px; }
+    input[type=file] { padding: 8px; }
+</style>
+
 <div class="content-wrapper">
 
-  <!-- Header -->
   <div class="content-header">
     <div class="container-fluid">
-      <div class="row mb-2">
+      <div class="row mb-2 mt-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Product Page</h1>
+          <h1 class="m-0">{{ 'Edit' if status == 'edit' else 'Add' }} Product</h1>
         </div>
 
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{ url_for('products') }}">Product</a></li>
-            <li class="breadcrumb-item active">Form Product</li>
+            <li class="breadcrumb-item"><a href="{{ url_for('products') }}">Products</a></li>
+            <li class="breadcrumb-item active">Product Form</li>
           </ol>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Content -->
   <div class="content">
     <div class="container-fluid">
 
-      <div class="card p-3">
+      <div class="card p-0">
 
-        <div class="card-header">
-          <a href="{{ url_for('products') }}" class="btn btn-outline-secondary">Back</a>
+        <div class="card-header border-0">
+          <a href="{{ url_for('products') }}" class="btn btn-outline-secondary">← Back to Inventory</a>
         </div>
 
-        <div class="card-body">
+        <div class="card-body p-4">
 
           <form
             method="post"
@@ -43,114 +69,108 @@
             action="{{ url_for('add_product') if status == 'add' else url_for('edit_product') }}"
           >
 
-            <!-- IMAGE PREVIEW -->
-            <center>
-              {% if status == 'add' %}
-                <img src="{{ url_for('static', filename='no-image.png') }}"
-                     id="output"
-                     class="img-preview">
-              {% else %}
-                <img src="{% if product.image %}
-                          {{ url_for('static', filename='uploads/resized_' ~ product.image) }}
-                        {% else %}
-                          {{ url_for('static', filename='no-image.png') }}
-                        {% endif %}"
-                     id="output"
-                     class="img-preview"
-                     onerror="this.onerror=null;this.src='/static/error-image.png'">
-              {% endif %}
-            </center>
+            <div class="row">
+                <div class="col-md-4 text-center mb-4 border-right pr-4">
+                    <label style="display: block; text-align: left;">Product Image</label>
 
-            <!-- IMAGE -->
-            <div class="form-group">
-              <label>Image</label>
-              <input type="file"
-                     class="form-control"
-                     name="image"
-                     accept="image/*"
-                     onchange="loadFile(event)">
+                    {% if status == 'add' %}
+                        <img src="{{ url_for('static', filename='no-image.png') }}"
+                             id="output"
+                             class="img-preview">
+                    {% else %}
+                        <img src="{% if product.image %}
+                                  {{ url_for('static', filename='uploads/resized_' ~ product.image) }}
+                                {% else %}
+                                  {{ url_for('static', filename='no-image.png') }}
+                                {% endif %}"
+                             id="output"
+                             class="img-preview"
+                             onerror="this.onerror=null;this.src='/static/error-image.png'">
+                    {% endif %}
+
+                    <input type="file"
+                           class="form-control"
+                           name="image"
+                           accept="image/*"
+                           onchange="loadFile(event)"
+                           style="border-style: dashed;">
+                </div>
+
+                <div class="col-md-8 pl-4">
+
+                    <div class="form-group mb-4">
+                      <label>Name</label>
+                      <input type="text"
+                             class="form-control"
+                             name="name"
+                             value="{{ product.name if status == 'edit' }}"
+                             required>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                          <label>Category</label>
+                          <select class="form-control" name="category">
+                            {% for item in category %}
+                              <option value="{{ item.id }}"
+                                {{ 'selected' if product and product.category == item.name }}>
+                                {{ item.name }}
+                              </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="col-md-6">
+                          <label>Quantity (Stock)</label>
+                          <input type="number"
+                                 class="form-control"
+                                 name="qty"
+                                 value="{{ product.qty if status == 'edit' else 0 }}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                          <label>Cost</label>
+                          <input type="number"
+                                 step="any"
+                                 class="form-control"
+                                 name="cost"
+                                 value="{{ product.cost if status == 'edit' else 0 }}">
+                        </div>
+                        <div class="col-md-6">
+                          <label>Sale Price</label>
+                          <input type="number"
+                                 step="any"
+                                 class="form-control"
+                                 name="price"
+                                 value="{{ product.price if status == 'edit' else 0 }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                      <label>Description</label>
+                      <textarea class="form-control"
+                                name="description"
+                                rows="4">{{ product.description if product }}</textarea>
+                    </div>
+
+                    {% if status == 'edit' %}
+                      <input type="hidden" name="product_id" value="{{ product.id }}">
+                      <input type="hidden" name="old_image" value="{{ product.image }}">
+                    {% endif %}
+
+                </div>
             </div>
 
-            <!-- NAME -->
-            <div class="form-group">
-              <label>Name(*)</label>
-              <input type="text"
-                     class="form-control"
-                     name="name"
-                     value="{{ product.name if status == 'edit' }}"
-                     required>
+            <div class="clearfix mt-4 pt-4 border-top">
+                {% if status == 'add' %}
+                  <a href="{{ url_for('products') }}" class="btn btn-danger float-left">Cancel</a>
+                  <button type="submit" class="btn btn-primary float-right">Save Product</button>
+                {% else %}
+                  <a href="{{ url_for('products') }}" class="btn btn-danger float-left">Cancel</a>
+                  <button type="submit" class="btn btn-warning float-right">Update Product</button>
+                {% endif %}
             </div>
-
-            <!-- CATEGORY -->
-            <div class="form-group">
-              <label>Category(*)</label>
-              <select class="form-control" name="category">
-                {% for item in category %}
-                  <option value="{{ item.id }}"
-                    {{ 'selected' if product and product.category == item.name }}>
-                    {{ item.name }}
-                  </option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <!-- COST -->
-            <div class="form-group">
-              <label>Cost(*)</label>
-              <input type="number"
-                     step="any"
-                     class="form-control"
-                     name="cost"
-                     value="{{ product.cost if status == 'edit' else 0 }}">
-            </div>
-
-            <!-- PRICE -->
-            <div class="form-group">
-              <label>Price(*)</label>
-              <input type="number"
-                     step="any"
-                     class="form-control"
-                     name="price"
-                     value="{{ product.price if status == 'edit' else 0 }}">
-            </div>
-
-            <!-- QTY (🔥 NEW) -->
-            <div class="form-group">
-              <label>Quantity (Stock)</label>
-              <input type="number"
-                     class="form-control"
-                     name="qty"
-                     value="{{ product.qty if status == 'edit' else 0 }}">
-            </div>
-
-            <!-- DESCRIPTION -->
-            <div class="form-group">
-              <label>Description</label>
-              <textarea class="form-control"
-                        name="description">{{ product.description if product }}</textarea>
-            </div>
-
-            <!-- HIDDEN -->
-            {% if status == 'edit' %}
-              <input type="hidden" name="product_id" value="{{ product.id }}">
-              <input type="hidden" name="old_image" value="{{ product.image }}">
-            {% endif %}
-
-            <!-- BUTTONS -->
-            {% if status == 'add' %}
-              <a href="{{ url_for('products') }}"
-                 class="btn btn-danger">Cancel</a>
-
-              <button type="submit"
-                      class="btn btn-primary float-right">
-                Save
-              </button>
-            {% else %}
-              <button type="submit"
-                      class="btn btn-warning float-right">
-                Update
-              </button>
-            {% endif %}
 
           </form>
 
@@ -168,7 +188,7 @@
     var output = document.getElementById('output');
     output.src = URL.createObjectURL(event.target.files[0]);
     output.onload = function() {
-      URL.revokeObjectURL(output.src);
+      URL.revokeObjectURL(output.src); // free memory
     }
   };
 </script>

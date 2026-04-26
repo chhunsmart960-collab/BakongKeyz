@@ -1,20 +1,109 @@
 {% extends 'pageFront/master.html' %}
 {% block content %}
-    <main>
-        <h2>Get in Touch</h2>
-        <p>If you have any questions, suggestions, or want to work with us, please fill out the form below or reach out via email.</p>
 
-        <h3>Contact Form</h3>
-        <form action="/contact" method="post">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <input type="text" name="phone" placeholder="Your phone number" required>
-            <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-            <button type="submit">Send Message</button>
-        </form>
+<style>
+.contact-page {
+    max-width: 600px;
+    margin: 60px auto;
+}
 
-        <h3>Email & Phone</h3>
-        <p>Email: <a href="mailto:info@example.com">info@example.com</a></p>
-        <p>Phone: +1 (555) 123-4567</p>
-    </main>
+.contact-page h2 {
+    font-weight: 800;
+    font-size: 3rem;
+    text-transform: uppercase;
+    border-bottom: 2px solid #000;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.contact-page > p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 40px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    transition: border-color 0.3s;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: #000;
+}
+
+.contact-form button {
+    background: #000;
+    color: #fff;
+    border: 1px solid #000;
+    padding: 15px 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.contact-form button:hover {
+    background: #fff;
+    color: #000;
+}
+
+.contact-info {
+    margin-top: 50px;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.contact-info div {
+    font-size: 0.95rem;
+}
+
+.contact-info strong {
+    display: block;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.contact-info a {
+    color: #000;
+    text-decoration: underline;
+}
+</style>
+
+<main class="contact-page">
+    <h2>Get in Touch</h2>
+    <p>Inquiries regarding products, partnerships, or general support.</p>
+
+    <form class="contact-form" action="/contact" method="post">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="email" name="email" placeholder="Email Address" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+        <textarea name="message" placeholder="Message" rows="5" required></textarea>
+        <button type="submit">Submit Inquiry</button>
+    </form>
+
+    <div class="contact-info">
+        <div>
+            <strong>Email</strong>
+            <a href="mailto:info@keyzstore.com">info@keyzstore.com</a>
+        </div>
+        <div>
+            <strong>Direct Line</strong>
+            <span>+1 (555) 123-4567</span>
+        </div>
+    </div>
+</main>
+
 {% endblock %}

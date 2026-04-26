@@ -1,39 +1,52 @@
 {% extends 'pageFront/master.html' %}
-
 {% block content %}
 
 <style>
-/* KEEP YOUR ORIGINAL DESIGN */
 .payment-page {
-  background: #FAF8F3;
-  min-height: 100vh;
-  padding: 48px 20px 80px;
-  font-family: 'DM Sans', sans-serif;
+  padding: 60px 0;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
 }
 
 .checkout-card {
   width: 100%;
-  max-width: 480px;
+  max-width: 400px;
   background: #fff;
-  border-radius: 20px;
-  border: 1px solid #E8E0D0;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-  overflow: hidden;
+  border: 1px solid #000;
+  border-radius: 0;
 }
 
 .checkout-header {
-  background: #FAF8F3;
-  border-bottom: 1px solid #E8E0D0;
-  padding: 28px 36px 24px;
+  border-bottom: 1px solid #000;
+  padding: 30px;
   text-align: center;
 }
 
+.checkout-header h2 {
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+}
+
+.checkout-header p {
+  color: #555;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
 .checkout-body {
-  padding: 28px 36px 32px;
+  padding: 40px 30px;
   text-align: center;
+}
+
+.qr-box {
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  margin-bottom: 25px;
+  display: inline-block;
 }
 
 .qr-box img {
@@ -41,108 +54,75 @@
   height: 200px;
   object-fit: contain;
 }
+
+.total-row {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 15px 0;
+}
+
+.total-row span { color: #555; text-transform: uppercase; font-size: 0.9rem; align-self: center; }
+.total-row strong { font-weight: 800; }
+
+.instruction {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
 </style>
 
-<main class="payment-page">
-
+<div class="payment-page">
   <div class="checkout-card">
-
     <div class="checkout-header">
       <h2>Scan & Pay</h2>
-      <p>Use KHQR / Bakong app</p>
+      <p>KHQR / Bakong</p>
     </div>
-
     <div id="app" class="checkout-body">
-
       <div class="qr-box">
         <img src="{{ url_for('static', filename='qrcodes/' + filename) }}">
       </div>
-
       <div class="total-row">
-        <span>Amount:</span>
-        <strong> {{ "%.2f"|format(cart_total) }} ៛</strong>
+        <span>Total</span>
+        <strong>{{ "%.2f"|format(cart_total) }} ៛</strong>
       </div>
-
       <div class="instruction">
-
-        <div v-if="!paid">
-          <p>Waiting for payment...</p>
-        </div>
-
-        <div v-else style="color:green;">
-          ✅ Payment confirmed
-        </div>
-
+        <div v-if="!paid" style="color: #555;">Waiting for payment...</div>
+        <div v-else style="color: #000; border: 1px solid #000; padding: 10px;">Payment Confirmed</div>
       </div>
-
     </div>
-
   </div>
-
-</main>
+</div>
 
 <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
 <script>
 const { createApp } = Vue;
-
 createApp({
-  data() {
-    return {
-      qrcode: {{ qr|tojson }},
-      paid: false,
-      interval: null,
-      stopped: false
-    }
-  },
-
+  data() { return { qrcode: {{ qr|tojson }}, paid: false, interval: null, stopped: false } },
   methods: {
     checkStatus() {
-
       if (this.stopped) return;
-
-      axios.get('/check_status', {
-        params: { qrcode: this.qrcode}
-      }).then(res => {
-
-        // always normalize result
-        const statusRaw =
-          res.data?.data?.status ||
-          res.data?.status ||
-          res.data;
-
+      axios.get('/check_status', { params: { qrcode: this.qrcode} }).then(res => {
+        const statusRaw = res.data?.data?.status || res.data?.status || res.data;
         const status = String(statusRaw).trim().toUpperCase();
-
-        console.log("STATUS:", status);
-
         if (status === "PAID" && !this.stopped) {
-
-          this.paid = true;
-          this.stopped = true;
-
-          clearInterval(this.interval);
-          this.interval = null;
-
-          setTimeout(() => {
-            window.location.replace("/confirmation_payment");
-          }, 3000);
+          this.paid = true; this.stopped = true;
+          clearInterval(this.interval); this.interval = null;
+          setTimeout(() => { window.location.replace("/confirmation_payment"); }, 3000);
         }
-      })
-      .catch(err => {
-        console.log("check error", err);
-      });
+      }).catch(err => console.log("check error", err));
     }
   },
-
   mounted() {
     this.checkStatus();
     this.interval = setInterval(this.checkStatus, 3000);
   },
-
-  beforeUnmount() {
-    clearInterval(this.interval);
-  }
+  beforeUnmount() { clearInterval(this.interval); }
 }).mount("#app");
 </script>
 

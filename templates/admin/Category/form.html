@@ -1,67 +1,77 @@
 {% extends 'admin/layout/master.html' %}
 {% block page_title %}
-    Admin | Category
+    Admin | Category Form
 {% endblock %}
 {% block content %}
+
+<style>
+    /* Keyz Store Admin Overrides */
+    .content-wrapper { font-family: 'Inter', sans-serif; }
+    h1.m-0 { font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+    .card { border: 1px solid #000 !important; border-radius: 0 !important; box-shadow: none !important; }
+    .card-header { background: #fff !important; border-bottom: 1px solid #e0e0e0 !important; }
+    .form-control { border-radius: 0; border: 1px solid #e0e0e0; padding: 12px; height: auto; }
+    .form-control:focus { border-color: #000; box-shadow: none; }
+    label { font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+
+    .btn { border-radius: 0 !important; text-transform: uppercase; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; padding: 10px 24px; }
+    .btn-primary, .btn-warning { background-color: #000 !important; border-color: #000 !important; color: #fff !important; transition: 0.3s; }
+    .btn-primary:hover, .btn-warning:hover { background-color: #fff !important; color: #000 !important; }
+    .btn-danger { background-color: transparent !important; border: 1px solid #e0e0e0 !important; color: #555 !important; }
+    .btn-danger:hover { border-color: #000 !important; color: #000 !important; }
+    .btn-outline-secondary { color: #000; border-color: transparent; padding-left: 0; }
+    .btn-outline-secondary:hover { background: transparent; color: #555; text-decoration: underline; }
+</style>
+
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class="row mb-3 mt-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Category Page</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url_for('categorys') }}">Category</a></li>
-                        <li class="breadcrumb-item active">Form Category</li>
-                    </ol>
+                    <h1 class="m-0">{{ 'Edit' if status == 'edit' else 'Add' }} Category</h1>
                 </div>
             </div>
         </div>
     </div>
-    <!-- /.content-header -->
 
-    <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
-            <div class="card p-3">
+            <div class="card">
                 <div class="card-header">
-                    <a href="{{ url_for('categorys') }}" class="btn btn-outline-secondary">Back</a>
+                    <a href="{{ url_for('categorys') }}" class="btn btn-outline-secondary">← Back to List</a>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
                     <form
                         method="post"
                         action="{{ url_for('add_category') if status == 'add' else url_for('edit_category') }}"
                     >
-                        <!-- Category Name -->
-                        <div class="form-group">
-                            <label>Name(*)</label>
+                        <div class="form-group mb-4">
+                            <label>Category Name</label>
                             <input
                                 type="text"
                                 class="form-control"
                                 id="name"
                                 name="name"
                                 value="{{ category.name if status == 'edit' }}"
-                                placeholder="Enter Category Name"
+                                placeholder="e.g., Essentials"
                                 required
                             >
                         </div>
 
-                        <!-- Hidden ID -->
                         {% if status == 'edit' %}
                             <input type="hidden" name="category_id" value="{{ category.id }}">
                         {% endif %}
 
-                        <!-- Buttons -->
-                        {% if status == 'add' %}
-                            <button type="submit" class="btn btn-danger">Cancel</button>
-                            <button type="submit" class="btn btn-primary float-right">Save</button>
-                        {% endif %}
-                        {% if status == 'edit' %}
-                            <button type="submit" class="btn btn-warning float-right">Update</button>
-                        {% endif %}
+                        <div class="clearfix mt-5 pt-3 border-top">
+                            {% if status == 'add' %}
+                                <a href="{{ url_for('categorys') }}" class="btn btn-danger float-left">Cancel</a>
+                                <button type="submit" class="btn btn-primary float-right">Save Category</button>
+                            {% endif %}
 
+                            {% if status == 'edit' %}
+                                <button type="submit" class="btn btn-warning float-right">Update Category</button>
+                            {% endif %}
+                        </div>
                     </form>
                 </div>
             </div>

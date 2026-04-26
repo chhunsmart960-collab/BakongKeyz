@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KaiShop | Login</title>
+    <title>Keyz Store | Admin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
     <style>
         body {
-            font-family: 'Source Sans Pro', sans-serif;
-            background-color: #f4f6f9;
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9f9;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -16,71 +21,87 @@
         }
 
         .login-box {
-            width: 360px;
+            width: 400px;
             background: white;
-            padding: 40px;
-            border-top: 5px solid #C04E01;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            border-radius: 4px;
+            padding: 50px 40px;
+            border: 1px solid #000;
+            box-shadow: 10px 10px 0px rgba(0,0,0,1); /* Brutalist shadow */
         }
 
         .login-logo {
-            font-size: 24px;
+            font-size: 28px;
             text-align: center;
-            margin-bottom: 25px;
-            font-weight: bold;
+            margin-bottom: 30px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            color: #000;
         }
-
-        .login-logo span { color: #C04E01; }
 
         .form-group { margin-bottom: 20px; }
 
         input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 0;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #000;
         }
 
         .btn-primary {
             width: 100%;
-            background-color: #007bff;
+            background-color: #000;
             color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 4px;
+            border: 1px solid #000;
+            padding: 15px;
+            border-radius: 0;
             cursor: pointer;
             font-size: 16px;
-            transition: background 0.3s;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
         }
 
-        .btn-primary:hover { background-color: #0056b3; }
+        .btn-primary:hover {
+            background-color: #fff;
+            color: #000;
+        }
 
         .footer-text {
             text-align: center;
-            font-size: 13px;
-            margin-top: 20px;
+            font-size: 12px;
+            margin-top: 30px;
             color: #777;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        /* Styling for the Flash Message */
+
         .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            padding: 10px 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 14px;
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #000;
+            padding: 12px 15px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-
-        /* Optional: Add a small dot or icon before the text */
         .alert-error::before {
-            content: "⚠️";
-            margin-right: 8px;
+            content: "✕";
+            margin-right: 10px;
+            font-weight: 800;
         }
     </style>
 </head>
@@ -88,7 +109,7 @@
 
 <div class="login-box">
     <div class="login-logo">
-        Kai<span>Shop</span> | Admin
+        Keyz Store<br><span style="font-size: 14px; color: #555; letter-spacing: 2px;">Admin Portal</span>
     </div>
 
     {% with messages = get_flashed_messages() %}
@@ -103,16 +124,16 @@
 
     <form method="post" action="{{ url_for('do_login', next=request.args.get('next')) }}">
         <div class="form-group">
-            <input type="text" name="username" placeholder="Enter username" required>
+            <input type="text" name="username" placeholder="Username" required>
         </div>
         <div class="form-group">
             <input type="password" name="password" placeholder="Password" required>
         </div>
-        <button type="submit" class="btn-primary">Login</button>
+        <button type="submit" class="btn-primary">Authenticate</button>
     </form>
 
     <div class="footer-text">
-        Copyright © 2026 KaiLang.
+        © 2026 Keyz Store.
     </div>
 </div>
 

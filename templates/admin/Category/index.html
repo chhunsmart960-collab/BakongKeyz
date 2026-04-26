@@ -3,57 +3,73 @@
     Admin | Category
 {% endblock %}
 {% block content %}
+
+<style>
+    /* Keyz Store Admin Overrides */
+    .content-wrapper { font-family: 'Inter', sans-serif; }
+    h1.m-0 { font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+    .card { border: 1px solid #000 !important; border-radius: 0 !important; box-shadow: none !important; }
+    .card-header { background: #fff !important; border-bottom: 1px solid #000 !important; }
+    .btn { border-radius: 0 !important; text-transform: uppercase; font-weight: 600; font-size: 0.8rem; letter-spacing: 1px; }
+    .btn-outline-primary { color: #000; border-color: #000; }
+    .btn-outline-primary:hover { background: #000; color: #fff; border-color: #000; }
+    .table thead tr.bg-primary { background-color: #000 !important; color: #fff !important; }
+    .table thead th { border: none; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+    .table td { vertical-align: middle; border-bottom: 1px solid #e0e0e0; }
+    .btn-outline-secondary { color: #555; border-color: #e0e0e0; }
+    .btn-outline-secondary:hover { background: #555; color: #fff; }
+    .btn-outline-danger { color: #000; border-color: #000; }
+    .btn-outline-danger:hover { background: #000; color: #fff; }
+</style>
+
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class="row mb-3 mt-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Category Page</h1>
+                    <h1 class="m-0">Categories</h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url_for('dashboards') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Category Page</li>
+                    <ol class="breadcrumb float-sm-right bg-transparent p-0 m-0" style="font-size: 0.85rem; text-transform: uppercase;">
+                        <li class="breadcrumb-item"><a href="{{ url_for('dashboards') }}" style="color:#555;">Dashboard</a></li>
+                        <li class="breadcrumb-item active" style="color:#000; font-weight:600;">Categories</li>
                     </ol>
                 </div>
             </div>
         </div>
     </div>
-    <!-- /.content-header -->
 
-    <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
-            <div class="card p-3">
-                <div class="card-header">
-                    <a href="{{ url_for('form_category', action='add') }}" class="btn btn-outline-primary">
-                        Add
+            <div class="card">
+                <div class="card-header border-0 py-3">
+                    <a href="{{ url_for('form_category', action='add') }}" class="btn btn-outline-primary px-4">
+                        + Add New
                     </a>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-borderless table-striped">
+                        <table class="table table-borderless mb-0">
                             <thead>
                                 <tr class="bg-primary text-white">
-                                    <th>No.</th>
+                                    <th class="pl-4">No.</th>
                                     <th>Name</th>
-                                    <th>Action</th>
+                                    <th class="text-right pr-4">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for category in categories %}
                                 <tr>
-                                    <td>{{ loop.index }}</td>
-                                    <td>{{ category.name }}</td>
-                                    <td>
-                                        <a class="btn btn-sm btn-outline-secondary"
+                                    <td class="pl-4">{{ loop.index }}</td>
+                                    <td style="font-weight: 500;">{{ category.name }}</td>
+                                    <td class="text-right pr-4">
+                                        <a class="btn btn-sm btn-outline-secondary mr-2"
                                            href="{{ url_for('form_category', action='edit', cat_id=category.id) }}">
-                                            <i class="far fa-edit"></i> Edit
+                                            Edit
                                         </a>
                                         <a class="btn btn-sm btn-outline-danger"
                                            href="{{ url_for('confirm_category', cat_id=category.id) }}">
-                                            <i class="far fa-trash-alt"></i> Delete
+                                            Delete
                                         </a>
                                     </td>
                                 </tr>

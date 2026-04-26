@@ -5,20 +5,41 @@
 {% endblock %}
 
 {% block content %}
+<style>
+    /* Keyz Store Admin Overrides */
+    .content-wrapper { font-family: 'Inter', sans-serif; background-color: #f9f9f9; }
+    h1.m-0 { font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+
+    .card { border: 1px solid #000 !important; border-radius: 0 !important; box-shadow: none !important; margin-top: 15px; }
+    .card-header { background: #fff !important; border-bottom: 1px solid #000 !important; padding: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+
+    .table thead tr.bg-primary { background-color: #000 !important; color: #fff !important; }
+    .table thead th { border: none; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; padding: 15px; }
+    .table td { vertical-align: middle; border-bottom: 1px solid #e0e0e0; padding: 15px; }
+
+    .breadcrumb { background: transparent; padding: 0; margin: 0; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
+    .breadcrumb a { color: #555; }
+    .breadcrumb-item.active { color: #000; }
+
+    /* Monochrome Badges */
+    .badge { border-radius: 0; padding: 6px 10px; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+    .badge-solid { background-color: #000; color: #fff; border: 1px solid #000; }
+    .badge-outline { background-color: transparent; color: #000; border: 1px solid #000; }
+</style>
+
 <div class="content-wrapper">
 
-  <!-- Content Header -->
   <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Order Page</h1>
+          <h1 class="m-0">Order Directory</h1>
         </div>
 
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item">
-              <a href="{{ url_for('dashboards') }}">Home</a>
+              <a href="{{ url_for('dashboards') }}">Dashboard</a>
             </li>
             <li class="breadcrumb-item active">Orders</li>
           </ol>
@@ -27,102 +48,100 @@
     </div>
   </div>
 
-  <!-- Main content -->
   <div class="content">
     <div class="container-fluid">
 
-      <div class="card p-3">
+      <div class="card p-0">
 
         <div class="card-header">
-          <strong>All Orders</strong>
+          All Orders
         </div>
 
-        <div class="card-body">
+        <div class="card-body p-0">
           <div class="table-responsive">
 
-            <table class="table table-borderless table-striped">
+            <table class="table table-borderless mb-0">
 
-  <thead>
-    <tr class="bg-primary text-white">
-      <th>No.</th>
-      <th>Customer</th>
-      <th>Phone</th>
-      <th>Total</th>
-      <th>Payment</th>
-      <th>Status</th>
-      <th>Date</th>
-    </tr>
-  </thead>
+              <thead>
+                <tr class="bg-primary text-white">
+                  <th class="pl-4">No.</th>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Total</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                  <th class="pr-4">Date</th>
+                </tr>
+              </thead>
 
-  <tbody>
+              <tbody>
 
-    {% if orders %}
-      {% for order in orders %}
-      <tr>
+                {% if orders %}
+                  {% for order in orders %}
+                  <tr>
 
-        <td>{{ loop.index }}</td>
+                    <td class="pl-4 text-muted">{{ loop.index }}</td>
 
-        <td>
-          <strong>{{ order.customer_name }}</strong><br>
-          <small>{{ order.email }}</small>
-        </td>
+                    <td>
+                      <strong style="font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">{{ order.customer_name }}</strong><br>
+                      <small style="color: #555;">{{ order.email }}</small>
+                    </td>
 
-        <td>{{ order.phone }}</td>
+                    <td style="color: #555;">{{ order.phone }}</td>
 
-        <td>
-          <strong>{{ order.total }} ៛</strong><br>
-          <small>{{ order.items|length if order.items else 0 }} items</small>
-        </td>
+                    <td>
+                      <strong style="font-size: 1.1rem;">{{ order.total }} ៛</strong><br>
+                      <small style="color: #777; text-transform: uppercase;">{{ order.items|length if order.items else 0 }} items</small>
+                    </td>
 
-        <!-- Payment -->
-        <td>
-          <span class="badge bg-info">
-            {{ order.payment_method or 'N/A' }}
-          </span><br>
+                    <td>
+                      <div style="margin-bottom: 5px;">
+                        <span class="badge badge-outline">
+                          {{ order.payment_method or 'N/A' }}
+                        </span>
+                      </div>
 
-          {% if order.payment_status == 'Paid' %}
-            <span class="badge bg-success">Paid</span>
-          {% else %}
-            <span class="badge bg-warning">Pending</span>
-          {% endif %}
-        </td>
+                      {% if order.payment_status == 'Paid' %}
+                        <span class="badge badge-solid">Paid</span>
+                      {% else %}
+                        <span class="badge badge-outline">Pending</span>
+                      {% endif %}
+                    </td>
 
-        <!-- Status -->
-        <td>
-          {% if order.status == 'Pending' %}
-            <span class="badge bg-warning">Pending</span>
-          {% elif order.status == 'Completed' %}
-            <span class="badge bg-success">Completed</span>
-          {% else %}
-            <span class="badge bg-secondary">
-              {{ order.status }}
-            </span>
-          {% endif %}
-        </td>
+                    <td>
+                      {% if order.status == 'Pending' %}
+                        <span class="badge badge-outline">Pending</span>
+                      {% elif order.status == 'Completed' %}
+                        <span class="badge badge-solid">Completed</span>
+                      {% else %}
+                        <span class="badge badge-outline" style="color: #555; border-color: #555;">
+                          {{ order.status }}
+                        </span>
+                      {% endif %}
+                    </td>
 
-        <!-- Date -->
-        <td>
-          {% if order.created_at %}
-            {{ order.created_at.strftime('%Y-%m-%d') }}<br>
-            <small>{{ order.created_at.strftime('%H:%M') }}</small>
-          {% else %}
-            N/A
-          {% endif %}
-        </td>
+                    <td class="pr-4">
+                      {% if order.created_at %}
+                        <span style="font-weight: 600;">{{ order.created_at.strftime('%Y-%m-%d') }}</span><br>
+                        <small style="color: #555;">{{ order.created_at.strftime('%H:%M') }}</small>
+                      {% else %}
+                        <span style="color: #999;">N/A</span>
+                      {% endif %}
+                    </td>
 
-      </tr>
-      {% endfor %}
-    {% else %}
-      <tr>
-        <td colspan="7" class="text-center text-muted">
-          No orders found
-        </td>
-      </tr>
-    {% endif %}
+                  </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <td colspan="7" class="text-center text-muted py-5" style="text-transform: uppercase; letter-spacing: 1px;">
+                      No orders found
+                    </td>
+                  </tr>
+                {% endif %}
 
-  </tbody>
+              </tbody>
 
-</table>
+            </table>
 
           </div>
         </div>

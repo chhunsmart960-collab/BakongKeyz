@@ -1,240 +1,85 @@
 {% extends 'pageFront/master.html' %}
-
 {% block content %}
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
 <style>
-  :root {
-    --cream: #FAF8F3;
-    --border: #E0D9CC;
-    --text: #1A1710;
-    --muted: #8A8378;
-    --orange: #E8500A;
-  }
-
-  body {
-    background: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .cart-wrapper {
-    max-width: 1000px;
-    margin: auto;
-    padding: 60px 20px;
-  }
-
   .cart-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 40px;
-    margin-bottom: 25px;
+    font-weight: 800; font-size: 2.5rem; text-transform: uppercase;
+    border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 30px;
   }
-
   .cart-item {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 0.8fr 0.6fr;
-    align-items: center;
-    gap: 15px;
-    padding: 18px;
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    margin-bottom: 12px;
+    display: grid; grid-template-columns: 2fr 1fr 1fr auto;
+    align-items: center; gap: 20px; padding: 20px 0;
+    border-bottom: 1px solid #e0e0e0;
   }
-
-  .cart-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .cart-left img {
-    width: 65px;
-    height: 65px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-  }
-
-  .cart-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-  }
-
-  .cart-price {
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  .qty-box {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    justify-content: center;
-  }
-
-  .qty-btn {
-    width: 30px;
-    height: 30px;
-    border: 1px solid var(--border);
-    background: #fff;
-    cursor: pointer;
-    border-radius: 6px;
-  }
-
-  .qty-input {
-    width: 55px;
-    text-align: center;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-  }
-
-  .subtotal {
-    font-family: 'Playfair Display', serif;
-    text-align: center;
-  }
-
-  .remove-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 6px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-
-  .cart-summary {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 25px;
-    padding-top: 15px;
-    border-top: 1px solid var(--border);
-  }
-
+  .cart-left { display: flex; align-items: center; gap: 20px; }
+  .cart-left img { width: 80px; height: 100px; object-fit: cover; border: 1px solid #e0e0e0; }
+  .cart-name { font-weight: 600; text-transform: uppercase; font-size: 1.1rem; }
+  .cart-price { color: #555; font-size: 0.9rem; margin-top: 4px; }
+  .qty-box { display: flex; align-items: center; border: 1px solid #000; width: fit-content; }
+  .qty-btn { width: 35px; height: 35px; background: transparent; border: none; cursor: pointer; font-weight: 600; }
+  .qty-btn:hover { background: #f0f0f0; }
+  .qty-input { width: 40px; text-align: center; border: none; border-left: 1px solid #000; border-right: 1px solid #000; font-weight: 600; }
+  .qty-input:focus { outline: none; }
+  .subtotal { font-weight: 800; font-size: 1.1rem; }
+  .remove-btn { background: transparent; border: none; color: #999; cursor: pointer; text-decoration: underline; font-size: 0.85rem; text-transform: uppercase; }
+  .remove-btn:hover { color: #000; }
   .checkout-btn {
-    background: var(--orange);
-    color: #fff;
-    padding: 10px 18px;
-    border-radius: 10px;
-    text-decoration: none;
+    display: block; width: 100%; max-width: 300px; margin: 40px 0 0 auto;
+    background: #000; color: #fff; padding: 18px; text-align: center;
+    text-transform: uppercase; font-weight: 600; letter-spacing: 1px;
+    border: 1px solid #000; text-decoration: none; transition: 0.3s;
   }
+  .checkout-btn:hover { background: #fff; color: #000; text-decoration: none; }
 </style>
 
-<div id="cartApp" class="cart-wrapper">
-
-  <div class="cart-title">Your Shopping Cart</div>
-
+<div id="cartApp">
+  <div class="cart-title">Shopping Bag</div>
   <div v-for="item in items" :key="item.id" class="cart-item">
-
     <div class="cart-left">
       <a :href="'/product/' + item.product.id">
-          <img :src="'/static/uploads/' + item.product.image"
-                 :alt="item.product.name">
+          <img :src="'/static/uploads/' + item.product.image" :alt="item.product.name">
       </a>
       <div>
         <div class="cart-name">[[ item.product.name ]]</div>
-        <div class="cart-price"> [[ item.price ]] ៛</div>
-        <small>Stock: [[ item.stock ]]</small>
+        <div class="cart-price">[[ item.price ]] ៛</div>
       </div>
     </div>
-
     <div class="qty-box">
       <button class="qty-btn" @click="decrease(item)">-</button>
-
-      <input class="qty-input"
-             type="number"
-             v-model.number="item.quantity"
-             :max="item.stock"
-             @input="update(item)">
-
+      <input class="qty-input" type="number" v-model.number="item.quantity" :max="item.stock" @input="update(item)">
       <button class="qty-btn" @click="increase(item)">+</button>
     </div>
-
-    <div class="subtotal">
-      [[ item.price * item.quantity ]]៛
-    </div>
-
-    <button class="remove-btn" @click="removeItem(item.id)">
-      Remove
-    </button>
-
+    <div class="subtotal">[[ item.price * item.quantity ]] ៛</div>
+    <button class="remove-btn" @click="removeItem(item.id)">Remove</button>
   </div>
-    <a
-      href="/payment"
-      class="checkout-btn"
-      :style="{ opacity: total <= 0 ? 0.5 : 1, pointerEvents: total <= 0 ? 'none' : 'auto' }"
-    >
-      Checkout
-    </a>
-
+  <a href="/payment" class="checkout-btn" :style="{ opacity: total <= 0 ? 0.5 : 1, pointerEvents: total <= 0 ? 'none' : 'auto' }">
+    Checkout — [[ total ]] ៛
+  </a>
 </div>
 
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-
 <script>
 const { createApp } = Vue;
-
 createApp({
-
   delimiters: ['[[', ']]'],
-
-  data() {
-    return {
-      items: {{ items | tojson }},
-      timer: null
-    }
-  },
-
-  computed: {
-    total() {
-       return this.items.reduce((s, i) => s + i.price * i.quantity, 0);
-    }
-  },
-
+  data() { return { items: {{ items | tojson }}, timer: null } },
+  computed: { total() { return this.items.reduce((s, i) => s + i.price * i.quantity, 0); } },
   methods: {
-
-    increase(item) {
-      if (item.quantity < item.stock) {
-        item.quantity++;
-        this.update(item);
-      }
-    },
-
-    decrease(item) {
-      if (item.quantity > 1) {
-        item.quantity--;
-        this.update(item);
-      }
-    },
-
+    increase(item) { if (item.quantity < item.stock) { item.quantity++; this.update(item); } },
+    decrease(item) { if (item.quantity > 1) { item.quantity--; this.update(item); } },
     update(item) {
       clearTimeout(this.timer);
-
       this.timer = setTimeout(() => {
         fetch("/cart/update", {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({
-            item_id: item.id,
-            qty: item.quantity
-          })
+          method: "POST", headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ item_id: item.id, qty: item.quantity })
         });
       }, 300);
     },
-
     removeItem(id) {
-      fetch("/cart/remove", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ item_id: id })
-      });
-
+      fetch("/cart/remove", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ item_id: id }) });
       this.items = this.items.filter(i => i.id !== id);
     }
-
   }
-
 }).mount("#cartApp");
 </script>
-
 {% endblock %}

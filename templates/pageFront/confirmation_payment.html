@@ -1,159 +1,129 @@
 {% extends 'pageFront/master.html' %}
-
 {% block content %}
 
 <style>
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
 .confirm-page {
-  background: #FAF8F3;
-  min-height: 100vh;
-  padding: 48px 20px 80px;
-  font-family: 'DM Sans', sans-serif;
+  padding: 60px 0;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
 }
 
 .confirm-card {
   width: 100%;
-  max-width: 480px;
+  max-width: 450px;
   background: #fff;
-  border-radius: 20px;
-  border: 1px solid #E8E0D0;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-  overflow: hidden;
+  border: 1px solid #000;
+  border-radius: 0;
 }
 
 .confirm-header {
-  background: #FAF8F3;
-  border-bottom: 1px dashed #E8E0D0;
-  padding: 24px;
+  border-bottom: 1px solid #000;
+  padding: 30px;
   text-align: center;
 }
 
 .confirm-header h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 24px;
-  margin: 0;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 2rem;
+  margin-bottom: 5px;
 }
 
 .confirm-header p {
-  font-size: 12px;
-  color: #9A9388;
-  margin-top: 4px;
+  color: #555;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
 }
 
 .confirm-body {
-  padding: 24px;
+  padding: 30px;
 }
 
-.success-icon {
-  text-align: center;
-  font-size: 42px;
-  margin-bottom: 10px;
-}
-
-.receipt-row,
-.info-row {
+.receipt-row, .info-row {
   display: flex;
   justify-content: space-between;
-  margin: 8px 0;
-  font-size: 14px;
+  margin: 12px 0;
+  font-size: 0.95rem;
 }
 
-.receipt-label,
-.label {
-  color: #9A9388;
-}
+.receipt-label { color: #555; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+.receipt-value { font-weight: 600; }
 
-.receipt-value,
-.value {
-  font-weight: 500;
-}
-
-.divider,
-hr {
-  border: none;
-  border-top: 1px dashed #E8E0D0;
-  margin: 16px 0;
+.divider {
+  border-top: 1px solid #e0e0e0;
+  margin: 20px 0;
 }
 
 .total-row {
   display: flex;
   justify-content: space-between;
-  font-size: 18px;
-  font-weight: 700;
-  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.section-title {
+  margin-top: 25px;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #000;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
 }
 
 .btn {
   width: 100%;
-  background: #E8500A;
+  background: #000;
   color: #fff;
-  border: none;
-  padding: 15px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 15px;
+  border: 1px solid #000;
+  padding: 18px;
+  font-size: 0.9rem;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   text-decoration: none;
-  display: inline-block;
-  margin-top: 20px;
+  display: block;
   text-align: center;
+  margin-top: 30px;
+  transition: all 0.3s;
 }
 
 .btn:hover {
-  background: #CC4508;
-}
-
-.section-title {
-  margin-top: 20px;
-  font-weight: 600;
+  background: #fff;
+  color: #000;
+  text-decoration: none;
 }
 </style>
 
-<main class="confirm-page">
+<div class="confirm-page">
   <div class="confirm-card">
-
     <div class="confirm-header">
-      <h2>Receipt</h2>
-      <p>Payment Successful</p>
+      <h2>Invoice</h2>
+      <p>Order Confirmed</p>
     </div>
 
     <div class="confirm-body">
-
-      <div class="success-icon">✅</div>
-
-      <!-- ORDER INFO -->
       <div class="receipt-row">
-        <span class="receipt-label">Invoice</span>
+        <span class="receipt-label">Order No.</span>
         <span class="receipt-value">{{ invoice }}</span>
       </div>
-
       <div class="receipt-row">
         <span class="receipt-label">Date</span>
-        <span class="receipt-value">
-          {{ order.created_at.strftime('%Y-%m-%d %H:%M') if order.created_at else '' }}
-        </span>
+        <span class="receipt-value">{{ order.created_at.strftime('%Y-%m-%d %H:%M') if order.created_at else '' }}</span>
       </div>
 
       <div class="divider"></div>
 
-      <!-- TOTAL -->
       <div class="total-row">
         <span>Total</span>
         <span>{{ "%.2f"|format(order.total) }} ៛</span>
       </div>
 
-      <div class="divider"></div>
-
-      <!-- ITEMS -->
-      <div class="section-title">Items</div>
+      <div class="section-title">Purchased Items</div>
 
       {% for item in items %}
       <div class="info-row">
@@ -165,15 +135,13 @@ hr {
 
       <div class="divider"></div>
 
-      <div style="text-align:center; font-size:12px; color:#9A9388;">
-        Thank you for your purchase 💛
+      <div style="text-align:center; font-size:0.8rem; color:#555; text-transform: uppercase; letter-spacing: 1px; margin-top: 20px;">
+        Thank you for shopping with Keyz.
       </div>
 
-      <a href="/" class="btn">Back to Home</a>
-
+      <a href="/" class="btn">Return to Store</a>
     </div>
-
   </div>
-</main>
+</div>
 
 {% endblock %}

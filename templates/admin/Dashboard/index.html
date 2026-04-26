@@ -3,95 +3,130 @@
 	Admin | Dashboard
 {% endblock %}
 {% block content %}
-    <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
+
+<style>
+    /* Keyz Store Dashboard Overrides */
+    .content-wrapper { font-family: 'Inter', sans-serif; background-color: #f9f9f9; }
+    h1.m-0 { font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+
+    /* Breadcrumb styling */
+    .breadcrumb { background: transparent; padding: 0; margin: 0; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
+    .breadcrumb a { color: #555; }
+    .breadcrumb-item.active { color: #000; }
+
+    /* Brutalist Metric Boxes */
+    .small-box {
+        background-color: #fff !important;
+        color: #000 !important;
+        border: 2px solid #000;
+        border-radius: 0;
+        box-shadow: 6px 6px 0px rgba(0,0,0,1) !important;
+        margin-bottom: 30px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        position: relative;
+    }
+    .small-box:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 8px 8px 0px rgba(0,0,0,1) !important;
+    }
+    .small-box .inner { padding: 30px 25px; }
+    .small-box h3 { font-weight: 800; font-size: 2.8rem; margin-bottom: 5px; line-height: 1; }
+    .small-box p { text-transform: uppercase; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; color: #555; margin: 0; }
+
+    /* Override Icon Opacity */
+    .small-box .icon { color: rgba(0,0,0,0.05) !important; z-index: 0; }
+
+    /* Footer Links */
+    .small-box-footer {
+        background-color: #000 !important;
+        color: #fff !important;
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        padding: 12px 0;
+        border-top: 1px solid #000;
+        z-index: 1;
+        position: relative;
+    }
+    .small-box-footer:hover { background-color: #fff !important; color: #000 !important; text-decoration: none; }
+</style>
+
+<div class="content-wrapper">
     <div class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div class="row mb-4 mt-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard Page</h1>
-          </div><!-- /.col -->
+            <h1 class="m-0">System Overview</h1>
+          </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{ url_for('dashboards') }}">Home</a></li>
-              <li class="breadcrumb-item active">Starter Page</li>
+              <li class="breadcrumb-item active">Dashboard</li>
             </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- /.content-header -->
 
-    <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
-          <div class="card p-3">
-              <div class="row">
+        <div class="row">
+
           <div class="col-lg-3 col-6">
-            <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
                 <h3>150</h3>
-
                 <p>New Orders</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer">More Info <i class="fas fa-arrow-right ml-1"></i></a>
             </div>
           </div>
-          <!-- ./col -->
+
           <div class="col-lg-3 col-6">
-            <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
-
+                <h3>53<sup style="font-size: 1.5rem">%</sup></h3>
                 <p>Bounce Rate</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer">More Info <i class="fas fa-arrow-right ml-1"></i></a>
             </div>
           </div>
-          <!-- ./col -->
+
           <div class="col-lg-3 col-6">
-            <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
                 <h3>44</h3>
-
-                <p>User Registrations</p>
+                <p>Registrations</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer">More Info <i class="fas fa-arrow-right ml-1"></i></a>
             </div>
           </div>
-          <!-- ./col -->
+
           <div class="col-lg-3 col-6">
-            <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
                 <h3>65</h3>
-
                 <p>Unique Visitors</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer">More Info <i class="fas fa-arrow-right ml-1"></i></a>
             </div>
           </div>
-          <!-- ./col -->
+
         </div>
-          </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
+      </div>
     </div>
-    <!-- /.content -->
-  </div>
+</div>
 {% endblock %}

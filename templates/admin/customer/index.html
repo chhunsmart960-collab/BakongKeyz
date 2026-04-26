@@ -3,5 +3,87 @@
 	Admin | Customer
 {% endblock %}
 {% block content %}
-    <h1>hime</h1>
+
+<style>
+    /* Keyz Store Customer Directory Overrides */
+    .content-wrapper { font-family: 'Inter', sans-serif; background-color: #f9f9f9; }
+    h1.m-0 { font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+
+    .card { border: 1px solid #000 !important; border-radius: 0 !important; box-shadow: none !important; margin-top: 15px; }
+    .card-header { background: #fff !important; border-bottom: 1px solid #000 !important; padding: 20px; }
+
+    .table thead tr.bg-primary { background-color: #000 !important; color: #fff !important; }
+    .table thead th { border: none; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; padding: 15px; }
+    .table td { vertical-align: middle; border-bottom: 1px solid #e0e0e0; padding: 15px; }
+
+    .breadcrumb { background: transparent; padding: 0; margin: 0; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
+    .breadcrumb a { color: #555; }
+    .breadcrumb-item.active { color: #000; }
+
+    .btn-outline-secondary { color: #000; border: 1px solid #000; border-radius: 0; text-transform: uppercase; font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; transition: 0.3s; }
+    .btn-outline-secondary:hover { background: #000; color: #fff; }
+</style>
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-3 mt-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Customer Directory</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ url_for('dashboards') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Customers</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header border-0">
+                    <h3 class="card-title" style="font-weight: 800; text-transform: uppercase; font-size: 1rem; margin: 0;">Registered Accounts</h3>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-borderless mb-0">
+                            <thead>
+                                <tr class="bg-primary text-white">
+                                    <th class="pl-4">No.</th>
+                                    <th>Full Name</th>
+                                    <th>Email Address</th>
+                                    <th>Phone Number</th>
+                                    <th class="text-right pr-4">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="pl-4 text-muted">1</td>
+                                    <td style="font-weight: 600;">Jane Doe</td>
+                                    <td style="color: #555;">jane.doe@example.com</td>
+                                    <td style="color: #555;">+1 (555) 019-2834</td>
+                                    <td class="text-right pr-4">
+                                        <a class="btn btn-sm btn-outline-secondary" href="#">View Details</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="pl-4 text-muted">2</td>
+                                    <td style="font-weight: 600;">John Smith</td>
+                                    <td style="color: #555;">john.smith@example.com</td>
+                                    <td style="color: #555;">+1 (555) 982-1345</td>
+                                    <td class="text-right pr-4">
+                                        <a class="btn btn-sm btn-outline-secondary" href="#">View Details</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
